@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
+"""Task 2"""
 
 
-import math
-
-
-def floor(n: float) -> float:
+def floor(a: float) -> int:
+    def floor(n: float) -> float:
     """
     Returns the floor of a float.
 
@@ -14,4 +13,4 @@ def floor(n: float) -> float:
     Returns:
         float: The floor of n.
     """
-    return math.floor(n)
+    return int(a)
