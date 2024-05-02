@@ -3,7 +3,6 @@
 
 
 def floor(a: float) -> int:
-    def floor(n: float) -> float:
     """
     Returns the floor of a float.
 
