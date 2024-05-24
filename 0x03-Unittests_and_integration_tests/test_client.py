@@ -5,6 +5,7 @@ This module contains the unit tests for the `GithubOrgClient` class from the `cl
 
 import unittest
 from unittest.mock import patch
+from parameterized import parameterized
 from client import GithubOrgClient
 
 
@@ -40,6 +41,26 @@ class TestGithubOrgClient(unittest.TestCase):
         with patch.object(GithubOrgClient, 'org', new_callable=property(lambda self: {"repos_url": expected_repos_url})):
             client = GithubOrgClient("test_org")
             self.assertEqual(client._public_repos_url, expected_repos_url)
+
+    @patch('client.get_json')
+    def test_public_repos(self, mock_get_json):
+        """
+        Test that `GithubOrgClient.public_repos` returns the expected list of repos.
+
+        Use `patch` as a context manager to mock `_public_repos_url`.
+        """
+        test_payload = [
+            {"name": "repo1"},
+            {"name": "repo2"},
+            {"name": "repo3"},
+        ]
+        expected_repos = ["repo1", "repo2", "repo3"]
+        mock_get_json.return_value = test_payload
+        with patch.object(GithubOrgClient, '_public_repos_url', new_callable=property(lambda self: "mock_url")):
+            client = GithubOrgClient("test_org")
+            repos = client.public_repos()
+            self.assertEqual(repos, expected_repos)
+            mock_get_json.assert_called_once_with("mock_url")
 
 
 if __name__ == "__main__":
